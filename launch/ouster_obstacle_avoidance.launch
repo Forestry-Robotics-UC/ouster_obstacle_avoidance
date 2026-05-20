@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="lidar_avoidance_node" pkg="ouster_obstacle_avoidance" type="ouster_obstacle_avoidance_node" output="screen">
+
+    <!-- Load all tuning parameters under the node's private namespace -->
+    <rosparam file="$(find ouster_obstacle_avoidance)/config/ouster_obstacle_avoidance.yaml" command="load" />
+
+    <!-- Remap avoidance output to the topic twist_mux listens on -->
+    <!-- <remap from="avoidance/cmd_vel" to="ros1/watchdog/cmd_vel_stamped" /> -->
+
+    <!-- Visualisation topics (subscribe in RViz) -->
+    <!-- /lidar_avoidance_node/obstacle_cloud   — coloured obstacle PointCloud2 -->
+    <!-- /lidar_avoidance_node/markers          — sector arcs, rings, push arrow -->
+    <!-- /lidar_avoidance_node/aggregated_scan  — column-min LaserScan           -->
+    <!-- /lidar_avoidance_node/state_marker     — state halo sphere              -->
+
+  </node>
+
+</launch>

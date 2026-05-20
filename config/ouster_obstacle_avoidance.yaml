@@ -1,0 +1,67 @@
+# ouster_obstacle_avoidance config
+# All parameters live under the node's private namespace (~/).
+
+# ── Topic names ─────────────────────────────────────────────────────────────
+points_topic:      /ouster/points
+cmd_vel_topic:     ros1/watchdog/cmd_vel_stamped
+goal_topic:        /move_base_simple/goal
+
+# ── State machine ────────────────────────────────────────────────────────────
+clear_dist:      1.10   # [m] hysteresis exit threshold (> field/d_warn)
+coast_duration:  0.50   # [s]  zero-vel pulse before handing back to controller
+sync_queue_size: 10
+
+# ── Obstacle detector ────────────────────────────────────────────────────────
+detector:
+  n_rows:            128
+  n_cols:            1024
+
+  n_sectors:         36
+
+  scan_row_min:      0
+  scan_row_max:      127
+
+  nearir_veg_threshold: 2000.0
+  use_nearir_filter:    true
+
+# ── Potential field ──────────────────────────────────────────────────────────
+field:
+  # THESE PARAMETERS ALSO CONTROL THE VISUALIZER NOW
+  d_warn:             1.00   # [m]  enter AVOIDING
+  d_stop:             0.60   # [m]  linear velocity → 0
+  d_max:              5.00   # [m]  outer edge of field AND detection radius
+
+  k_rep:              1.00   # repulsive field gain
+  k_att:              5.00   # attractive field gain toward goal
+
+  v_max:              0.40   # [m/s]  max avoidance linear speed
+  omega_max:          0.80   # [rad/s]
+
+  k_ang:              1.20   # angular proportional gain
+  k_boost:            0.60   # extra angular multiplier at high urgency
+  k_escape:           0.40   # [rad/s]  rotation speed when trapped
+
+  k_front_weight:     1.50   # frontal sector force multiplier
+  front_half_angle:   1.047  # [rad]  ±60° frontal cone
+
+  k_omega_speed_scale: 0.50  # reduce omega cap proportionally with linear speed
+
+  f_cancel_threshold:  0.10  # |F_total| below this → candidate for trapped
+  trapped_sector_ratio: 0.75 # fraction of sectors occupied before declaring trapped
+
+# ── Visualisation ────────────────────────────────────────────────────────────
+viz:
+  frame_id:            os_sensor
+
+  halo_height:         0.50   # [m]
+  halo_radius:         0.20   # [m]
+
+  sector_arc_height:   0.05   # [m]  z offset above LiDAR origin
+  sector_arc_width:    0.03   # [m]  line width
+
+  arrow_shaft_diameter: 0.05
+  arrow_head_diameter:  0.10
+  arrow_length_scale:   1.00  # scale |push_vector| for arrow length
+
+  scan_min_range:      0.10   # [m]
+  scan_max_range:      2.00   # [m]
