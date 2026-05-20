@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
     visualization_msgs
     std_msgs
-    message_filters
     tf2
     tf2_ros
     tf2_geometry_msgs
@@ -36,7 +35,6 @@ catkin_package(
         geometry_msgs
         visualization_msgs
         std_msgs
-        message_filters
     tf2
     tf2_ros
     tf2_geometry_msgs

@@ -76,8 +76,8 @@ void AvoidanceNode::pointsCallback(const sensor_msgs::PointCloud2ConstPtr& cloud
     if (has_goal_) {
         try {
             geometry_msgs::PoseStamped target_time_goal = last_goal_;
-            // We want to transform the static goal position to the current LiDAR pose
-            target_time_goal.header.stamp = cloud_msg->header.stamp;
+
+            target_time_goal.header.stamp = ros::Time(0); // Use latest available transform
 
             geometry_msgs::PoseStamped transformed_goal;
             tf_buffer_.transform(target_time_goal, transformed_goal, cloud_msg->header.frame_id, ros::Duration(0.1));
