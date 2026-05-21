@@ -3,12 +3,12 @@
 
 # ── Topic names ─────────────────────────────────────────────────────────────
 points_topic:      /ouster/points
-cmd_vel_topic:     ros1/watchdog/cmd_vel_stamped
+cmd_vel_topic:     /ros1/watchdog/cmd_vel_stamped
 goal_topic:        /move_base_simple/goal
 
 # ── State machine ────────────────────────────────────────────────────────────
 clear_dist:      1.10   # [m] hysteresis exit threshold (> field/d_warn)
-coast_duration:  0.50   # [s]  zero-vel pulse before handing back to controller
+coast_duration:  0.0   # [s]  zero-vel pulse before handing back to controller
 sync_queue_size: 10
 
 # ── Obstacle detector ────────────────────────────────────────────────────────
