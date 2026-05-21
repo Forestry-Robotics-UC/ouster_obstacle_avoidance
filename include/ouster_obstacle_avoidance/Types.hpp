@@ -3,7 +3,7 @@
 #include <vector>
 #include <limits>
 #include <Eigen/Core>
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/TwistStamped.h>
 
 namespace ouster_obstacle_avoidance {
 
@@ -46,7 +46,7 @@ struct PushResult {
     float            frontal_clearance  = 1.0f;   // [0,1], 1 = fully clear ahead
     float            urgency            = 0.0f;   // [0,1], normalised |push_vector|
     bool             trapped            = false;  // forces cancelled, rotate to escape
-    geometry_msgs::Twist cmd_vel;
+    geometry_msgs::TwistStamped cmd_vel;
 };
 
 } // namespace ouster_obstacle_avoidance

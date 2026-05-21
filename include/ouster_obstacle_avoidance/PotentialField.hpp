@@ -47,7 +47,7 @@ private:
     float computeFrontalClearance(const std::vector<SectorData>& sectors) const;
     float computeUrgency(const Eigen::Vector2f& rep_vec) const;
     bool detectTrapped(const std::vector<SectorData>& sectors, const Eigen::Vector2f& push_vec) const;
-    geometry_msgs::Twist buildTwist(const Eigen::Vector2f& push_vec,
+    geometry_msgs::TwistStamped buildTwist(const Eigen::Vector2f& push_vec,
                                     float frontal_clearance,
                                     float urgency,
                                     bool  trapped,

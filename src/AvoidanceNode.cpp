@@ -1,6 +1,6 @@
 #include "ouster_obstacle_avoidance/AvoidanceNode.hpp"
 #include <std_msgs/String.h>
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/TwistStamped.h>
 #include <ros/ros.h>
 #include <json/json.h>
 #include <cmath>
@@ -29,7 +29,7 @@ AvoidanceNode::AvoidanceNode(ros::NodeHandle& nh, ros::NodeHandle& pnh)
 
     std::string cmd_vel_topic;
     pnh_.param<std::string>("cmd_vel_topic", cmd_vel_topic, "avoidance/cmd_vel");
-    pub_cmd_vel_ = nh_.advertise<geometry_msgs::Twist>(cmd_vel_topic, 1);
+    pub_cmd_vel_ = nh_.advertise<geometry_msgs::TwistStamped>(cmd_vel_topic, 1);
 
     std::string points_topic;
     pnh_.param<std::string>("points_topic", points_topic, "/ouster/points");
@@ -98,8 +98,12 @@ void AvoidanceNode::pointsCallback(const sensor_msgs::PointCloud2ConstPtr& cloud
     updateState(result);
 
     // ── cmd_vel output ────────────────────────────────────────────────────────
-    if (state_ == AvoidanceState::AVOIDING)
-        pub_cmd_vel_.publish(result.cmd_vel);
+    if (state_ == AvoidanceState::AVOIDING) {
+        geometry_msgs::TwistStamped msg = result.cmd_vel;
+        msg.header.stamp = cloud_msg->header.stamp;
+        msg.header.frame_id = "base_link";
+        pub_cmd_vel_.publish(msg);
+    }
     // COASTING: zero twist published by coastTimerCallback
     // NOMINAL:  silent — twist_mux falls through to the controller
 
@@ -139,7 +143,9 @@ void AvoidanceNode::updateState(const PushResult& result)
                     /*oneshot=*/true);
 
                 // Publish the zero twist immediately
-                pub_cmd_vel_.publish(geometry_msgs::Twist{});
+                geometry_msgs::TwistStamped zero_twist;
+                zero_twist.header.stamp = ros::Time::now();
+                pub_cmd_vel_.publish(zero_twist);
             }
             break;
 

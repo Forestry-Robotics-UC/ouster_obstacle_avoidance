@@ -151,14 +151,14 @@ int PotentialField::maxClearanceSector(
 //  Twist assembly
 // ─────────────────────────────────────────────────────────────────────────────
 
-geometry_msgs::Twist PotentialField::buildTwist(
+geometry_msgs::TwistStamped PotentialField::buildTwist(
     const Eigen::Vector2f& push_vec,
     float frontal_clearance,
     float urgency,
     bool  trapped,
     const std::vector<SectorData>& sectors) const
 {
-    geometry_msgs::Twist twist;
+    geometry_msgs::TwistStamped twist;
 
     if (trapped)
     {
@@ -168,8 +168,8 @@ geometry_msgs::Twist PotentialField::buildTwist(
         if (escape_angle > static_cast<float>(M_PI))
             escape_angle -= 2.0f * static_cast<float>(M_PI);  // [-π, π]
 
-        twist.linear.x  = 0.0;
-        twist.angular.z = params_.k_escape * (escape_angle >= 0.0f ? 1.0 : -1.0);
+        twist.twist.linear.x  = 0.0;
+        twist.twist.angular.z = params_.k_escape * (escape_angle >= 0.0f ? 1.0 : -1.0);
         return twist;
     }
 
@@ -188,8 +188,8 @@ geometry_msgs::Twist PotentialField::buildTwist(
                           * (1.0f - params_.k_omega_speed_scale * v_ratio);
     angular = std::clamp(angular, -omega_cap, omega_cap);
 
-    twist.linear.x  = static_cast<double>(linear);
-    twist.angular.z = static_cast<double>(angular);
+    twist.twist.linear.x  = static_cast<double>(linear);
+    twist.twist.angular.z = static_cast<double>(angular);
     return twist;
 }
 

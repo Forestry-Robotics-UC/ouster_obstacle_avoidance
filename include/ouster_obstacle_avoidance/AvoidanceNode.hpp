@@ -3,7 +3,7 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/PoseStamped.h>
 
 #include <tf2_ros/transform_listener.h>
